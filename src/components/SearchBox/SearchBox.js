@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './SearchBox.css';
-
+import store from "../../redux/store";
+import { setFilm } from '../../redux/actions';
 class SearchBox extends Component {
     state = {
         searchLine: ''
@@ -10,6 +11,7 @@ class SearchBox extends Component {
     }
     searchBoxSubmitHandler = (e) => {
         e.preventDefault();
+        store.dispatch(setFilm(this.state.searchLine));
     }
     render() {
         const { searchLine } = this.state;

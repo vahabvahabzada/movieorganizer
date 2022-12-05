@@ -3,25 +3,29 @@ import './ListPage.css';
 
 class ListPage extends Component {
     state = {
+        listTitle:'',
         movies: [
-            { /*title*/name: 'The Godfather', year: 1972, /*imdbID*/id: 'tt0068646' }
+            /*{ title name: 'The Godfather', year: 1972, imdbID id: 'tt0068646' }*/
         ]
     }
     componentDidMount() {
         const id = this.props.match.params;
         console.log(id);
-        //console.log(this.props.match);//yoxlama ucun yazdim
+        console.log(this.props.match);//yoxlama ucun yazdim
         // TODO: запрос к сервер на получение списка
         // TODO: запросы к серверу по всем imdbID
         fetch("https://acb-api.algoritmika.org/api/movies/list/"+id.id)
         .then(res=>res.json())
-        .then(data=>{console.log(data);this.setState({movies:data.movies})})
-        //this.setState({movies:this.state.movies.push()})
+        .then(data=>{console.log(data);this.setState({movies:data.movies,listTitle:data.title})})
     }
+
+    componentWillUnmount(){
+    }
+
     render() { 
         return (
             <div className="list-page">
-                <h1 className="list-page__title">Мой список</h1>
+                <h1 className="list-page__title">{this.state.listTitle}</h1>
                 <ul>
                     {this.state.movies.map((item) => {
                         return (

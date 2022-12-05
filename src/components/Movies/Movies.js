@@ -14,6 +14,7 @@ class Movies extends Component {
             .then((data)=>{console.log(data.Search/*{imdbID:data.imdbID,title:data.Title,year:data.Year,poster:data.Poster}*/);this.setState({movies:data.Search})});
         })
     }
+
     render() { 
         return ( 
             <ul className="movies">

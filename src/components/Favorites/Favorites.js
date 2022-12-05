@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Favorites.css';
 
 import store from "../../redux/store";
+import { clearList, deleteTarget } from '../../redux/actions';
 import { Link } from 'react-router-dom';
 class Favorites extends Component {
     state = {
@@ -20,14 +21,20 @@ class Favorites extends Component {
         this.setState({movies:state.inTheList})
     })
     }
+
+    componentWillUnmount(){
+        store.dispatch(clearList());//sehife her defe basdan yenilendikde,siyahidaki cache-i temizleyir
+        this.setState({movies:[]})  
+    }
     
-    deleter=(e)=>{
+    deleter=(/*e*/removeId)=>{
         //e.preventDefault();
-        document.querySelector("."+e.currentTarget.id).style.display="none";
+        //document.querySelector("."+e.currentTarget.id).style.display="none";//en teze bunu comment etdim
         //bura global state-de uygun obyekti silmek ucun code logic yazilmalidir
+        store.dispatch(deleteTarget(removeId));
     }
     renameList=(e)=>{
-        if(e.target.value===''){this.setState({saveButtonDisabled:true});document.querySelector('.favorites__save').style.background="#bbc0ce"}
+        if(e.target.value===''||this.state.movies.length===0){this.setState({saveButtonDisabled:true});document.querySelector('.favorites__save').style.background="#bbc0ce"}
         else{this.setState({saveButtonDisabled:false});document.querySelector('.favorites__save').style.background="#496DDB"}
         this.setState({title:e.target.value});
     }
@@ -60,7 +67,7 @@ class Favorites extends Component {
                 <input value={this.state.title} className="favorites__name" onChange={this.renameList} placeholder="Enter list name"/>
                 <ul className="favorites__list">
                     {this.state.movies.map((item) => {
-                        return <li key={item.id} className={item.id}>{item.name}&nbsp;({item.year})<span><button id={item.id} onClick={/*(e)=>console.log(item.id)*/this.deleter} disabled={this.state.saveButtonClicked?true:false}>x</button></span></li>;
+                        return <li key={item.id} className={item.id}>{item.name}&nbsp;({item.year})<span><button id={item.id} onClick={()=>this.deleter(item.id)/*this.deleter*/} disabled={this.state.saveButtonClicked?true:false}>x</button></span></li>;
                     })}
                 </ul>
                 {!this.state.saveButtonClicked?<button type="button" className="favorites__save" onClick={this.postList} disabled={this.state.saveButtonDisabled}>Сохранить список</button>:<Link to={"/list/"+this.state.pathID}>Go to list</Link>}

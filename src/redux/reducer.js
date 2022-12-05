@@ -16,6 +16,12 @@ const reducer=(state=initialState,action)=>{
         state.inTheList.push({name:action.payload.name,year:action.payload.year,id:action.payload.id});
         }
     }
+    if(action.type==="DELETE_TARGET"){
+        state.inTheList.forEach((item)=>{if(item.id===action.payload.id){state.inTheList.splice(state.inTheList.indexOf(item),1)}})
+    }
+    if(action.type==="CLEAR_LIST"){
+        state.inTheList=action.payload.content;
+    }
     return state;
 }
 

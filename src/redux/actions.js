@@ -7,4 +7,11 @@ export function setFilm(name){
 export function addToList(filmName,filmYear,filmId){
     return{type:'ADD_TO_LIST',payload:{name:filmName,year:filmYear,id:filmId}}
 }
+
+export function deleteTarget(removeId){
+    return{type:'DELETE_TARGET',payload:{id:removeId}}
+}
+export function clearList(){
+    return{type:'CLEAR_LIST',payload:{content:[]}}
+}
 //all of action function should be declared here

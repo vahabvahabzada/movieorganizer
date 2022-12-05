@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import MovieItem from '../MovieItem/MovieItem';
 import './Movies.css';
-
+import store from "../../redux/store";
 class Movies extends Component {
     state = { 
-        movies: [
-            {
-                imdbID: 'tt3896198',
-                title: "Guardians of the Galaxy Vol. 2",
-                year: 2017,
-                poster: "https://m.media-amazon.com/images/M/MV5BNjM0NTc0NzItM2FlYS00YzEwLWE0YmUtNTA2ZWIzODc2OTgxXkEyXkFqcGdeQXVyNTgwNzIyNzg@._V1_SX300.jpg"
-
-            },
-            {
-                imdbID: 'tt0068646',
-                title: "The Godfather",
-                year: 1972,
-                poster: "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
-
-            }
-        ]
+        movies: []
     }
+    componentDidMount(){
+        store.subscribe(()=>{
+            const state=store.getState();
+            fetch(`http://www.omdbapi.com/?s=${state.searchState}&apikey=a741b8e`)
+            .then((res)=>res.json())
+            .then((data)=>{console.log(data.Search/*{imdbID:data.imdbID,title:data.Title,year:data.Year,poster:data.Poster}*/);this.setState({movies:data.Search})});
+        })
+    }
+
     render() { 
         return ( 
             <ul className="movies">

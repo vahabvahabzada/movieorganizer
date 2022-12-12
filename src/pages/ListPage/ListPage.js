@@ -19,8 +19,8 @@ class ListPage extends Component {
         .then(data=>{console.log(data);this.setState({movies:data.movies,listTitle:data.title})})
     }
 
-    componentWillUnmount(){
-    }
+    /*componentWillUnmount(){
+    }*/
 
     render() { 
         return (
